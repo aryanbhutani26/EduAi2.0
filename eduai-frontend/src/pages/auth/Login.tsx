@@ -1,10 +1,9 @@
 // Login.tsx
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "../../lib/supabaseClient";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -50,6 +49,15 @@ export default function Login() {
         <Button type="submit" className="w-full bg-blue-600 text-white hover:bg-blue-700">
           Login
         </Button>
+        
+        <div className="mt-4 text-center pt-2 border-t">
+          <p className="text-gray-600 mb-2">New to Edu Ai?</p>
+          <Link to="/signup">
+            <Button variant="outline" className="w-full">
+              Sign up Now
+            </Button>
+          </Link>
+        </div>
       </form>
     </div>
   );
