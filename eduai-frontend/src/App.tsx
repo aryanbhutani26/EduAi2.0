@@ -1,40 +1,41 @@
 // import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// // import Login from "@/pages/auth/Login";
-
-// import Signup from "./pages/auth/signup";
 // import StudentDashboard from "./pages/student/Dashboard";
 // import ParentDashboard from "./pages/parent/Dashboard";
-// import Login from "./pages/auth/login";
+// import Signup from "./pages/auth/Signup";
+// import Login from "./pages/auth/Login";
+// import Layout from "./components/Layout";
 // import ProtectedRoute from "./components/ProtectedRoute";
+
 // function App() {
 //   return (
 //     <Router>
 //       <Routes>
-//         <Route path="/" element={<Login />} />
 //         <Route path="/signup" element={<Signup />} />
-//         <Route path="/student/dashboard" element={<StudentDashboard />} />
-//         <Route path="/parent/dashboard" element={<ParentDashboard />} />
+//         <Route path="/" element={<Login />} />
+
 //         <Route
 //           path="/student/dashboard"
 //           element={
-//             <ProtectedRoute allowedRoles={["student"]}>
+//             <Layout>
 //               <StudentDashboard />
-//             </ProtectedRoute>
+//             </Layout>
 //           }
 //         />
 
 //         <Route
 //           path="/parent/dashboard"
 //           element={
-//             <ProtectedRoute allowedRoles={["parent", "teacher"]}>
+//             <Layout>
 //               <ParentDashboard />
-//             </ProtectedRoute>
+//             </Layout>
 //           }
 //         />
 //       </Routes>
 //     </Router>
 //   );
 // }
+// export default App;
+
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import StudentDashboard from "./pages/student/Dashboard";
@@ -44,32 +45,69 @@ import Login from "./pages/auth/Login";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 
+// Learn Pages
+import LearnIndex from "./pages/learn/Index";
+import LessonPage from "./pages/learn/Lesson";
+import TestPage from "./pages/learn/Test";
+import TestResult from "./pages/learn/Result";
+
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
+        {/* Auth */}
         <Route path="/signup" element={<Signup />} />
+        <Route path="/" element={<Login />} />
 
+        {/* Dashboards */}
         <Route
           path="/student/dashboard"
           element={
-            <ProtectedRoute allowedRoles={["student"]}>
-              <Layout>
-                <StudentDashboard />
-              </Layout>
-            </ProtectedRoute>
+            <Layout>
+              <StudentDashboard />
+            </Layout>
           }
         />
-
         <Route
           path="/parent/dashboard"
           element={
-            <ProtectedRoute allowedRoles={["parent", "teacher"]}>
-              <Layout>
-                <ParentDashboard />
-              </Layout>
-            </ProtectedRoute>
+            <Layout>
+              <ParentDashboard />
+            </Layout>
+          }
+        />
+
+        {/* Learn Routes */}
+        <Route
+          path="/learn"
+          element={
+            <Layout>
+              <LearnIndex />
+            </Layout>
+          }
+        />
+        <Route
+          path="/learn/:chapterId"
+          element={
+            <Layout>
+              <LessonPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/test/:chapterId"
+          element={
+            <Layout>
+              <TestPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/test-result/:chapterId"
+          element={
+            <Layout>
+              <TestResult />
+            </Layout>
           }
         />
       </Routes>
@@ -77,3 +115,4 @@ function App() {
   );
 }
 
+export default App;

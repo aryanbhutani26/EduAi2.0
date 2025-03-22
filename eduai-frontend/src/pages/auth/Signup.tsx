@@ -30,24 +30,51 @@ export default function Signup() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const { error } = await supabase.auth.signUp({
-      email: formData.email,
-      password: formData.password,
-      options: {
-        data: {
-          full_name: formData.full_name,
-          institution: formData.institution,
-          role: formData.role,
+    
+    try {
+      // First sign up the user
+      const { data, error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: {
+            full_name: formData.full_name,
+            institution: formData.institution,
+            role: formData.role,
+          },
         },
-      },
-    });
+      });
 
-    if (error) {
-      alert(error.message);
-    } else {
-      alert("Signup successful. Please verify your email.");
-      navigate("/");
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      // Then sign in the user immediately
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (signInError) {
+        alert(signInError.message);
+        return;
+      }
+
+      // Redirect based on selected role
+      if (formData.role === "student") {
+        navigate("/student/dashboard");
+      } else if (formData.role === "parent") {
+        navigate("/parent/dashboard");
+      } else if (formData.role === "teacher") {
+        navigate("/teacher/dashboard");
+      } else {
+        alert("Signup successful. Please verify your email.");
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Error during signup:", error);
+      alert("An unexpected error occurred. Please try again.");
     }
   };
 
