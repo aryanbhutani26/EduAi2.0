@@ -204,7 +204,7 @@ const LandingPage: React.FC = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-16 min-h-screen bg-gradient-to-r from-purple-800 to-purple-600 text-white">
+      <section className="pt-16 min-h-screen bg-gradient-to-r from-blue-500 via-purple-400 to-white-500 text-white">
         <div className="container mx-auto px-8 py-32">
           <div className="max-w-2xl">
             <h1 className="text-6xl font-bold mb-6">Empowering Education with AI</h1>
