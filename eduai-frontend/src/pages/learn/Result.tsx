@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
+import { motion } from "framer-motion";
 
 const dummyResults = {
   "1": {
@@ -39,42 +40,109 @@ export default function TestResult() {
   const COLORS = ["#4CAF50", "#F44336"];
 
   return (
-    <div className="p-6 space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold">Your Results</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex justify-center h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie data={chartData} dataKey="value" cx="50%" cy="50%" outerRadius={80} label>
-                  {chartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+    <motion.div 
+      className="p-6 space-y-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <motion.div
+        initial={{ x: -20, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Button
+          onClick={() => navigate("/student/dashboard")}
+          variant="outline"
+          className="mb-4"
+        >
+          ← Back to Dashboard
+        </Button>
+      </motion.div>
+
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold">Your Results</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <motion.div 
+              className="flex justify-center h-64"
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie data={chartData} dataKey="value" cx="50%" cy="50%" outerRadius={80} label>
+                    {chartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            </motion.div>
+
+            <motion.div 
+              className="text-center mt-6 space-y-2"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+            >
+              <motion.p 
+                className="text-lg font-semibold text-green-600"
+                whileHover={{ scale: 1.05 }}
+              >
+                Correct: {result.correct}
+              </motion.p>
+              <motion.p 
+                className="text-lg font-semibold text-red-600"
+                whileHover={{ scale: 1.05 }}
+              >
+                Incorrect: {result.incorrect}
+              </motion.p>
+
+              <motion.div 
+                className="mt-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8 }}
+              >
+                <h4 className="font-semibold text-lg mb-1">Personalized Feedback:</h4>
+                <ul className="list-disc list-inside text-sm text-gray-700">
+                  {result.feedback.map((item, idx) => (
+                    <motion.li 
+                      key={idx}
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: 0.8 + (idx * 0.1) }}
+                    >
+                      {item}
+                    </motion.li>
                   ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+                </ul>
+              </motion.div>
 
-          <div className="text-center mt-6 space-y-2">
-            <p className="text-lg font-semibold text-green-600">Correct: {result.correct}</p>
-            <p className="text-lg font-semibold text-red-600">Incorrect: {result.incorrect}</p>
-
-            <div className="mt-4">
-              <h4 className="font-semibold text-lg mb-1">Personalized Feedback:</h4>
-              <ul className="list-disc list-inside text-sm text-gray-700">
-                {result.feedback.map((item, idx) => (
-                  <li key={idx}>{item}</li>
-                ))}
-              </ul>
-            </div>
-
-            <Button className="mt-6 bg-blue-600 text-white" onClick={() => navigate("/learn")}>Continue Learning</Button>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Button 
+                  className="mt-6 bg-blue-600 text-white" 
+                  onClick={() => navigate("/learn")}
+                >
+                  Continue Learning
+                </Button>
+              </motion.div>
+            </motion.div>
+          </CardContent>
+        </Card>
+      </motion.div>
+    </motion.div>
   );
 }

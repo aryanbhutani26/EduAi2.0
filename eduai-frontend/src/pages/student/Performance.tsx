@@ -46,7 +46,14 @@ export default function StudentPerformance() {
 
   return (
     <div className="p-6 space-y-6">
-      <h2 className="text-2xl font-bold">📊 Welcome back, Student!</h2>
+      <Button
+      onClick={() => window.location.href = "/student/dashboard"}
+      variant="outline"
+      className="mb-4"
+    > 
+      ← Back to Dashboard
+    </Button>
+      <h2 className="text-2xl font-bold">📊 Welcome back, Aryan!</h2>
       <p className="text-gray-600 mb-4">Here’s a snapshot of your academic progress so far. Keep it up! 🚀</p>
 
       {/* Stat Cards */}

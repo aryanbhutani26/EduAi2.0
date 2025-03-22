@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { motion } from "framer-motion";
 
 const dummyTests = {
   "1": {
@@ -58,45 +59,106 @@ export default function TestPage() {
 
   if (!test) return <div className="p-6">No test available for this chapter.</div>;
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   return (
-    <div className="p-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold">Chapter Test</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {test.type === "MCQ" &&
-            test.questions.map((q, i) => (
-              <div key={i} className="space-y-2">
-                <p className="font-medium">{q.question}</p>
-                <RadioGroup onValueChange={(val) => handleMCQChange(i, val)}>
-                  {('options' in q) && q.options.map((opt) => (
-                    <div key={opt} className="flex items-center space-x-2">
-                      <RadioGroupItem value={opt} id={`q-${i}-${opt}`} />
-                      <Label htmlFor={`q-${i}-${opt}`}>{opt}</Label>
-                    </div>
-                  ))}
-                </RadioGroup>
-              </div>
-            ))}
+    <motion.div 
+      className="p-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <motion.div
+        initial={{ x: -20, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Button
+          onClick={() => navigate("/student/dashboard")}
+          variant="outline"
+          className="mb-4"
+        >
+          ← Back to Dashboard
+        </Button>
+      </motion.div>
 
-          {test.type === "Text" &&
-            test.questions.map((q, i) => (
-              <div key={i} className="space-y-2">
-                <p className="font-medium">{q.question}</p>
-                <Textarea
-                  rows={4}
-                  placeholder="Your answer..."
-                  onChange={(e) => handleTextChange(i, e.target.value)}
-                />
-              </div>
-            ))}
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold">Chapter Test</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {test.type === "MCQ" &&
+              test.questions.map((q, i) => (
+                <motion.div 
+                  key={i} 
+                  className="space-y-2"
+                  variants={itemVariants}
+                >
+                  <p className="font-medium">{q.question}</p>
+                  <RadioGroup onValueChange={(val) => handleMCQChange(i, val)}>
+                    {('options' in q) && q.options.map((opt) => (
+                      <motion.div 
+                        key={opt} 
+                        className="flex items-center space-x-2"
+                        whileHover={{ scale: 1.02 }}
+                      >
+                        <RadioGroupItem value={opt} id={`q-${i}-${opt}`} />
+                        <Label htmlFor={`q-${i}-${opt}`}>{opt}</Label>
+                      </motion.div>
+                    ))}
+                  </RadioGroup>
+                </motion.div>
+              ))}
 
-          <Button className="w-full bg-blue-600 text-white" onClick={handleSubmit} disabled={submitted}>
-            Submit Test
-          </Button>
-        </CardContent>
-      </Card>
-    </div>
+            {test.type === "Text" &&
+              test.questions.map((q, i) => (
+                <motion.div 
+                  key={i} 
+                  className="space-y-2"
+                  variants={itemVariants}
+                >
+                  <p className="font-medium">{q.question}</p>
+                  <Textarea
+                    rows={4}
+                    placeholder="Your answer..."
+                    onChange={(e) => handleTextChange(i, e.target.value)}
+                  />
+                </motion.div>
+              ))}
+
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Button 
+                className="w-full bg-blue-600 text-white" 
+                onClick={handleSubmit} 
+                disabled={submitted}
+              >
+                Submit Test
+              </Button>
+            </motion.div>
+          </CardContent>
+        </Card>
+      </motion.div>
+    </motion.div>
   );
 }

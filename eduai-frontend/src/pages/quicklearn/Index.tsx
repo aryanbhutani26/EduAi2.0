@@ -145,7 +145,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import SubjectSelector from "./SubjectSelector";
 import CheatsheetCard from "./CheatsheetCard";
-import { Sparkles } from "lucide-react"; // Gemini icon
+import { Sparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 const dummyCheats = [
   {
@@ -176,38 +178,84 @@ const dummyCheats = [
 
 export default function QuickLearnIndex() {
   const [subject, setSubject] = useState("All");
-
   const subjects = ["All", ...new Set(dummyCheats.map((c) => c.subject))];
+  const filtered = subject === "All" ? dummyCheats : dummyCheats.filter((c) => c.subject === subject);
 
-  const filtered = subject === "All"
-    ? dummyCheats
-    : dummyCheats.filter((c) => c.subject === subject);
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
 
   return (
-    <div className="relative p-6 space-y-6">
-      {/* Subject filter */}
-      <SubjectSelector subjects={subjects} selected={subject} onChange={setSubject} />
+    
+    <motion.div 
+      className="p-6 space-y-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
 
-      {/* Cheatsheet cards */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filtered.map((item) => (
-          <CheatsheetCard key={item.id} {...item} />
+    >
+         <Button
+      onClick={() => window.location.href = "/student/dashboard"}
+      variant="outline"
+      className="mb-4"
+    > 
+      ← Back to Dashboard
+    </Button>
+      <motion.div
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <SubjectSelector
+          subjects={subjects}
+          selected={subject}
+          onChange={setSubject}
+        />
+      </motion.div>
+
+      <motion.div 
+        className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {filtered.map((item, index) => (
+          <motion.div
+            key={item.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+          >
+            <CheatsheetCard {...item} />
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
-      {/* Floating Gemini AI Button with Tooltip */}
-      <div className="group fixed bottom-6 right-6 z-50">
+      <motion.div 
+        className="group fixed bottom-6 right-6 z-50"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+      >
         <Link
           to="/quicklearn/ai"
           className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-4 rounded-full shadow-lg hover:scale-105 transition-all flex items-center justify-center"
         >
           <Sparkles className="w-6 h-6" />
         </Link>
-        <div className="absolute bottom-14 right-1/2 translate-x-1/2 opacity-0 group-hover:opacity-100 bg-gray-800 text-white text-xs rounded px-2 py-1 whitespace-nowrap transition-all">
+        <motion.div 
+          className="absolute bottom-14 right-1/2 translate-x-1/2 bg-gray-800 text-white text-xs rounded px-2 py-1 whitespace-nowrap"
+          initial={{ opacity: 0 }}
+          whileHover={{ opacity: 1 }}
+          transition={{ duration: 0.2 }}
+        >
           Generate Smart Sheet with Gemini
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 }
 

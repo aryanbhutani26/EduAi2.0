@@ -230,7 +230,14 @@ import CheatsheetPage from "./pages/quicklearn/Cheatsheet";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
 import GeminiPromptPage from "./pages/quicklearn/GeminiPrompt";
-
+import StudentPerformance from "./pages/student/Performance";
+import ParentPerformancePage from "./pages/parent/Performance";
+import ParentTestHistory from "./pages/parent/TestHistory";
+import GamificationDashboard from "./pages/student/GamificationDashboard";
+import Settings from "./pages/profile/Settings";
+import AssignmentHistory from "./pages/student/assignment-history";
+import StudentTestHistory from "./pages/student/TESTHISTORY";
+import AskGemini from "./pages/student/AskGemini";
 function App() {
   return (
     <Router>
@@ -251,6 +258,54 @@ function App() {
             </Layout>
           }
         />
+        <Route
+          path="/student/ask-ai"
+          element={
+            <Layout>
+              <AskGemini />
+            </Layout>
+          }
+        />
+        <Route
+          path="/student/profile"
+          element={
+            <Layout>
+              <Settings/>
+            </Layout>
+          }
+        />
+        <Route
+          path="/student/tests"
+          element={
+            <Layout>
+              <StudentTestHistory/>
+            </Layout>
+          }
+        />
+        <Route
+          path="/student/assignment-history"
+          element={
+            <Layout>
+              <AssignmentHistory/>
+            </Layout>
+          }
+        />
+        <Route
+        path="/student/performance"
+        element={
+          <Layout>
+            <StudentPerformance />
+          </Layout>
+        }
+        />
+        <Route
+        path="/student/gamify"
+        element={
+          <Layout>
+            <GamificationDashboard />
+          </Layout>
+        }
+        />
       {/* Gemini Ai  */}
         <Route
           path="/quicklearn/ai"
@@ -268,6 +323,25 @@ function App() {
             </Layout>
           }
         />
+        
+        <Route
+          path="/parent/performance"
+          element={
+            <Layout>
+              <ParentPerformancePage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/parent/test-history"
+          element={
+            <Layout>
+              <ParentTestHistory />
+              
+            </Layout>
+          }
+        />
+        
 
         {/* Learn Routes */}
         <Route

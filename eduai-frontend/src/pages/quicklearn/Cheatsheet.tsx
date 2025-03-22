@@ -2,6 +2,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 const dummySheets = {
   "1": {
@@ -47,32 +48,68 @@ const dummySheets = {
 export default function CheatsheetPage() {
   const { chapterId } = useParams();
   const navigate = useNavigate();
-
   const sheet = dummySheets[chapterId as keyof typeof dummySheets];
 
   if (!sheet) return <div className="p-6">Cheat sheet not found.</div>;
 
   return (
-    <div className="p-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold">{sheet.title}</CardTitle>
-          <p className="text-sm text-gray-500">Subject: {sheet.subject}</p>
-        </CardHeader>
-        <CardContent>
-          <ul className="list-disc pl-6 space-y-2 text-gray-800">
-            {sheet.bullets.map((point, index) => (
-              <li key={index}>{point}</li>
-            ))}
-          </ul>
+    <motion.div 
+      className="p-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold">{sheet.title}</CardTitle>
+            <p className="text-sm text-gray-500">Subject: {sheet.subject}</p>
+          </CardHeader>
+          <CardContent>
+            <motion.ul 
+              className="list-disc pl-6 space-y-2 text-gray-800"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+              }}
+            >
+              {sheet.bullets.map((point, index) => (
+                <motion.li
+                  key={index}
+                  variants={{
+                    hidden: { opacity: 0, x: -20 },
+                    visible: { opacity: 1, x: 0 }
+                  }}
+                >
+                  {point}
+                </motion.li>
+              ))}
+            </motion.ul>
 
-          <div className="mt-6 flex justify-end">
-            <Button onClick={() => navigate("/quicklearn")} className="bg-blue-600 text-white">
-              Back to Quick Learn
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+            <motion.div 
+              className="mt-6 flex justify-end"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button 
+                  onClick={() => navigate("/quicklearn")} 
+                  className="bg-blue-600 text-white"
+                >
+                  Back to Quick Learn
+                </Button>
+              </motion.div>
+            </motion.div>
+          </CardContent>
+        </Card>
+      </motion.div>
+    </motion.div>
   );
 }

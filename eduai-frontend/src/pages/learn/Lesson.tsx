@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 const dummyChapters = [
   {
@@ -51,68 +52,66 @@ export default function LessonPage() {
     return <div className="p-6">Chapter not found.</div>;
   }
 
-//   return (
-//     <div className="p-6">
-//       <Card>
-//         <CardHeader>
-//           <CardTitle className="text-2xl font-bold">{chapter.title}</CardTitle>
-//           <p className="text-sm text-gray-500">Subject: {chapter.subject}</p>
-//         </CardHeader>
-//         <CardContent>
-//           <div className="aspect-video mb-6">
-//             <iframe
-//               className="w-full h-full rounded"
-//               src={chapter.video_url}
-//               title="Lesson Video"
-//               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-//               allowFullScreen
-//             ></iframe>
-//           </div>
-//           <Button 
-//             onClick={() => navigate(`/test/${chapter.id}`)} 
-//             className="w-full bg-blue-600 text-white"
-//           >
-//             Start Chapter Test
-//           </Button>
-//         </CardContent>
-//       </Card>
-//     </div>
-//   );
-// }
-return (
-  <div className="p-6">
-    {/* Back to Dashboard Button */}
-    <Button
-      onClick={() => navigate("/student/dashboard")}
-      variant="outline"
-      className="mb-4"
+  return (
+    <motion.div 
+      className="p-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
     >
-      ← Back to Dashboard
-    </Button>
-
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold">{chapter.title}</CardTitle>
-        <p className="text-sm text-gray-500">Subject: {chapter.subject}</p>
-      </CardHeader>
-      <CardContent>
-        <div className="aspect-video mb-6">
-          <iframe
-            className="w-full h-full rounded"
-            src={chapter.video_url}
-            title="Lesson Video"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-        </div>
-        <Button 
-          onClick={() => navigate(`/test/${chapter.id}`)} 
-          className="w-full bg-blue-600 text-white"
+      <motion.div
+        initial={{ x: -20, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Button
+          onClick={() => navigate("/student/dashboard")}
+          variant="outline"
+          className="mb-4"
         >
-          Start Chapter Test
+          ← Back to Dashboard
         </Button>
-      </CardContent>
-    </Card>
-  </div>
-);
+      </motion.div>
+
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold">{chapter.title}</CardTitle>
+            <p className="text-sm text-gray-500">Subject: {chapter.subject}</p>
+          </CardHeader>
+          <CardContent>
+            <motion.div 
+              className="aspect-video mb-6"
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
+              <iframe
+                className="w-full h-full rounded"
+                src={chapter.video_url}
+                title="Lesson Video"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Button 
+                onClick={() => navigate(`/test/${chapter.id}`)} 
+                className="w-full bg-blue-600 text-white"
+              >
+                Start Chapter Test
+              </Button>
+            </motion.div>
+          </CardContent>
+        </Card>
+      </motion.div>
+    </motion.div>
+  );
 }
